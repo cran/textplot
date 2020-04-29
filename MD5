@@ -1,6 +1,6 @@
-79e0baaeb1217bb3a0fb24670d42e2f0 *DESCRIPTION
+f7fc5657196d9d27946e32795705a8d3 *DESCRIPTION
 d8c3d1966891dcfe93b8ca87d082c15c *NAMESPACE
-39cc14e010c4575520edb344ce138522 *NEWS.md
+162dae6e22476058da6195a863f8fc94 *NEWS.md
 8f6f112015dd000abd58b52d570504d4 *R/matrix_reduction.R
 39dc5b7796bc3376cd51d7f9645b15b5 *R/pkg.R
 9cc292be9bd6774ed63cf96cea97b765 *R/textplot_bar.R
@@ -10,8 +10,12 @@ d8c3d1966891dcfe93b8ca87d082c15c *NAMESPACE
 7aecba4aaac2aa0c5d2be0803e750236 *R/textplot_corlines.R
 656edfc19ff1c31e1341e2e1b840dc3d *R/textplot_dependencies.R
 c48e47becf16ded92c8309daa07f0a3c *README.md
-08aa2569f564590d68b4ab96c0c73f95 *data/example_btm.RData
+93d47d4c0cece25e28ce85869f20a9ea *build/vignette.rds
+2bbd954a5d2d4f4496aff77fd8d1af5e *data/example_btm.RData
 01629d9c17b358971f51f69f76207860 *data/example_udpipe.RData
+56ba4dea56b9fad890140e7e9afc0720 *inst/doc/textplot-examples.R
+97ac0a447f5829662869d7141716133f *inst/doc/textplot-examples.Rnw
+5551b724ac97bde7fb3e925b256118eb *inst/doc/textplot-examples.pdf
 c8ed0ff7a70a5ef01f12b0e555508318 *man/example_btm.Rd
 f686235b00800d7a174d7b7af8f96931 *man/example_udpipe.Rd
 d2620298c87d0623917bc68b824362fe *man/plot.BTM.Rd
@@ -22,3 +26,4 @@ ca48862223ee6d8ca1ef79c7a64c5b82 *man/textplot_cooccurrence.Rd
 f125fa4da5c0361de3f98126a67d53fa *man/textplot_correlation_lines.Rd
 b65214cbaf511c799e188dce2facafd0 *man/textplot_correlation_lines_attrs.Rd
 650f5f7bd1ea433e5349f1cf5040ae5e *man/textplot_dependencyparser.Rd
+97ac0a447f5829662869d7141716133f *vignettes/textplot-examples.Rnw
