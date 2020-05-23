@@ -40,6 +40,7 @@ Plot biterms as a clustered graph.
 The graph is constructed by assigning each word to a topic and within a topic of words biterm frequencies are shown.
 }
 \examples{
+library(igraph)
 library(BTM)
 library(ggraph)
 data(example_btm, package = 'textplot')
@@ -93,5 +94,5 @@ plot(model)
 }
 }
 \seealso{
-\code{\link[BTM]{BTM}}, \code{\link{textplot_bitermclusters}}
+\code{\link[BTM]{BTM}}, \code{\link{textplot_bitermclusters.default}}
 }

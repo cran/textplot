@@ -9,11 +9,12 @@ set.seed(123456789)
 
 
 ###################################################
-### code chunk number 2: textplot-examples.Rnw:47-54
+### code chunk number 2: textplot-examples.Rnw:47-55
 ###################################################
 library(udpipe)
 library(textplot)
 library(ggraph)
+library(igraph)
 x <- udpipe("His speech about marshmallows in New York is utter bullshit",
             "english")
 plt <- textplot_dependencyparser(x, size = 4)
@@ -21,13 +22,13 @@ plt
 
 
 ###################################################
-### code chunk number 3: textplot-examples.Rnw:57-58
+### code chunk number 3: textplot-examples.Rnw:58-59
 ###################################################
 print(plt)
 
 
 ###################################################
-### code chunk number 4: textplot-examples.Rnw:63-67
+### code chunk number 4: textplot-examples.Rnw:64-68
 ###################################################
 x <- udpipe("UDPipe provides tokenization, tagging, lemmatization and
              dependency parsing of raw text", "english")
@@ -36,17 +37,18 @@ plt
 
 
 ###################################################
-### code chunk number 5: textplot-examples.Rnw:70-71
+### code chunk number 5: textplot-examples.Rnw:71-72
 ###################################################
 print(plt)
 
 
 ###################################################
-### code chunk number 6: textplot-examples.Rnw:78-85
+### code chunk number 6: textplot-examples.Rnw:79-87
 ###################################################
 library(BTM)
 library(ggraph)
 library(concaveman)
+library(igraph)
 data(example_btm, package = 'textplot')
 model <- example_btm
 plt <- plot(model, title = "BTM model", top_n = 5)
@@ -54,13 +56,13 @@ plt
 
 
 ###################################################
-### code chunk number 7: textplot-examples.Rnw:88-89
+### code chunk number 7: textplot-examples.Rnw:90-91
 ###################################################
 print(plt)
 
 
 ###################################################
-### code chunk number 8: textplot-examples.Rnw:92-95
+### code chunk number 8: textplot-examples.Rnw:94-97
 ###################################################
 plt <- plot(model, title = "Biterm topic model", subtitle = "Topics 2 to 8",
             which = 2:8, top_n = 7)
@@ -68,17 +70,18 @@ plt
 
 
 ###################################################
-### code chunk number 9: textplot-examples.Rnw:98-99
+### code chunk number 9: textplot-examples.Rnw:100-101
 ###################################################
 print(plt)
 
 
 ###################################################
-### code chunk number 10: textplot-examples.Rnw:103-125
+### code chunk number 10: textplot-examples.Rnw:105-128
 ###################################################
 library(BTM)
 library(data.table)
 library(udpipe)
+library(igraph)
 ## Annotate text with parts of speech tags
 data("brussels_reviews", package = "udpipe")
 anno <- subset(brussels_reviews, language %in% "nl")
@@ -101,13 +104,51 @@ plt
 
 
 ###################################################
-### code chunk number 11: textplot-examples.Rnw:128-129
+### code chunk number 11: textplot-examples.Rnw:131-132
 ###################################################
 print(plt)
 
 
 ###################################################
-### code chunk number 12: textplot-examples.Rnw:136-145
+### code chunk number 12: textplot-examples.Rnw:139-166
+###################################################
+library(udpipe)
+library(data.table)
+library(ggraph)
+x <- merge(anno, anno,
+            by.x = c("doc_id", "paragraph_id", "sentence_id", "head_token_id"),
+            by.y = c("doc_id", "paragraph_id", "sentence_id", "token_id"),
+            all.x = TRUE, all.y = FALSE, suffixes = c("", "_parent"), sort = FALSE)
+x <- subset(x, dep_rel %in% c("obj", "amod"))
+x$topic <- factor(x$dep_rel)
+topiclabels <- levels(x$topic)
+x$topic <- as.integer(x$topic)
+## Construct biterms/terminology inputs to the plot
+biterms <- data.frame(term1 = x$lemma, term2 = x$lemma_parent,
+                      topic = x$topic, stringsAsFactors = FALSE)
+terminology <- document_term_frequencies(x, document = "topic",
+                                         term = c("lemma", "lemma_parent"))
+terminology <- document_term_frequencies_statistics(terminology)
+terminology <- terminology[order(terminology$tf_idf, decreasing = TRUE), ]
+terminology <- terminology[, head(.SD, 50), by = list(topic = doc_id)]
+terminology <- data.frame(topic = terminology$topic,
+                          token = terminology$term,
+                          probability = 1, stringsAsFactors = FALSE)
+plt <- textplot_bitermclusters(terminology, biterms,
+                               labels = topiclabels,
+                               title = "Objects of verbs and adjectives modifying nouns",
+                               subtitle = "Top 50 by group")
+plt
+
+
+###################################################
+### code chunk number 13: textplot-examples.Rnw:169-170
+###################################################
+print(plt)
+
+
+###################################################
+### code chunk number 14: textplot-examples.Rnw:178-187
 ###################################################
 library(udpipe)
 data("brussels_reviews_anno", package = "udpipe")
@@ -121,13 +162,13 @@ plt
 
 
 ###################################################
-### code chunk number 13: textplot-examples.Rnw:148-149
+### code chunk number 15: textplot-examples.Rnw:190-191
 ###################################################
 print(plt)
 
 
 ###################################################
-### code chunk number 14: textplot-examples.Rnw:157-165
+### code chunk number 16: textplot-examples.Rnw:199-207
 ###################################################
 library(graph)
 library(Rgraphviz)
@@ -140,7 +181,7 @@ textplot_correlation_lines(dtm, top_n = 25, threshold = 0.01, lwd = 5, label = T
 
 
 ###################################################
-### code chunk number 15: textplot-examples.Rnw:171-181
+### code chunk number 17: textplot-examples.Rnw:213-223
 ###################################################
 library(glasso)
 library(qgraph)
@@ -155,10 +196,11 @@ textplot_correlation_glasso(term_correlations, exclude_zero = TRUE)
 
 
 ###################################################
-### code chunk number 16: textplot-examples.Rnw:188-197
+### code chunk number 18: textplot-examples.Rnw:230-240
 ###################################################
 library(udpipe)
 library(ggraph)
+library(igraph)
 data(brussels_reviews_anno, package = 'udpipe')
 x <- subset(brussels_reviews_anno, xpos %in% "JJ" & language %in% "fr")
 x <- cooccurrence(x, group = "doc_id", term = "lemma")
@@ -169,7 +211,44 @@ plt
 
 
 ###################################################
-### code chunk number 17: textplot-examples.Rnw:200-201
+### code chunk number 19: textplot-examples.Rnw:243-244
+###################################################
+print(plt)
+
+
+###################################################
+### code chunk number 20: textplot-examples.Rnw:248-256 (eval = FALSE)
+###################################################
+## library(udpipe)
+## library(ggraph)
+## library(igraph)
+## library(data.table)
+## data("brussels_reviews", package = "udpipe")
+## anno <- subset(brussels_reviews, language %in% "nl")
+## anno <- data.frame(doc_id = anno$id, text = anno$feedback, stringsAsFactors = FALSE)
+## anno <- udpipe(anno, "dutch", trace = 10)
+
+
+###################################################
+### code chunk number 21: textplot-examples.Rnw:259-272
+###################################################
+biterms <- merge(anno, anno,
+            by.x = c("doc_id", "paragraph_id", "sentence_id", "head_token_id"),
+            by.y = c("doc_id", "paragraph_id", "sentence_id", "token_id"),
+            all.x = TRUE, all.y = FALSE, suffixes = c("", "_parent"), sort = FALSE)
+biterms <- setDT(biterms)
+biterms <- subset(biterms, dep_rel %in% c("obj", "amod"))
+biterms <- biterms[, list(cooc = .N), by = list(term1 = lemma, term2 = lemma_parent)]
+
+plt <- textplot_cooccurrence(biterms,
+                             title = "Objects of verbs and Adjectives modifying nouns", top_n = 75,
+                             vertex_color = "orange", edge_color = "black",
+                             fontface = "bold")
+plt
+
+
+###################################################
+### code chunk number 22: textplot-examples.Rnw:275-276
 ###################################################
 print(plt)
 
