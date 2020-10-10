@@ -3,6 +3,7 @@ options(prompt = "R> ", continue = "+   ")
 options(prompt = " ", continue = "   ")
 set.seed(123456789)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.align = "center")
+library(textplot)
 
 ## ----eval=(require(udpipe, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggplot2, quietly = TRUE) && require(igraph, quietly = TRUE)), fig.width=10, fig.height=5----
 library(textplot)
@@ -21,8 +22,9 @@ x <- udpipe("UDPipe provides tokenization, tagging, lemmatization and
 plt <- textplot_dependencyparser(x, size = 4)
 plt
 
-## ----eval=(require(BTM, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE)), fig.width=8, fig.height=6, out.width = '\\textwidth'----
+## ----eval=(require(BTM, quietly = TRUE) && require(ggplot2, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE)), fig.width=8, fig.height=6, out.width = '\\textwidth'----
 library(BTM)
+library(ggplot2)
 library(ggraph)
 library(ggforce)
 library(concaveman)
@@ -32,7 +34,7 @@ model <- example_btm
 plt <- plot(model, title = "BTM model", top_n = 5)
 plt
 
-## ----eval=(require(BTM, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE)), fig.width=8, fig.height=6----
+## ----eval=(require(BTM, quietly = TRUE) && require(ggplot2, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE)), fig.width=8, fig.height=6----
 plt <- plot(model, title = "Biterm topic model", subtitle = "Topics 2 to 8",
             which = 2:8, top_n = 7)
 plt
@@ -52,8 +54,9 @@ biterms <- biterms[, cooccurrence(x = lemma,
                                   skipgram = 2),
                      by = list(doc_id)]
 
-## ----eval=(require(BTM, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE) && require(data.table, quietly = TRUE) && require(udpipe, quietly = TRUE)), results="hide", fig.width=8, fig.height=6----
+## ----eval=(require(BTM, quietly = TRUE) && require(ggplot2, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE) && require(data.table, quietly = TRUE) && require(udpipe, quietly = TRUE)), results="hide", fig.width=8, fig.height=6----
 library(BTM)
+library(ggplot2)
 library(ggraph)
 library(ggforce)
 library(concaveman)
@@ -67,8 +70,9 @@ model <- BTM(x, k = 5, beta = 0.01, iter = 2000, background = TRUE,
 plt <- plot(model)
 plt
 
-## ----eval=(require(BTM, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE) && require(data.table, quietly = TRUE) && require(udpipe, quietly = TRUE)), fig.width=8, fig.height=8----
+## ----eval=(require(BTM, quietly = TRUE) && require(ggplot2, quietly = TRUE) && require(ggraph, quietly = TRUE) && require(ggforce, quietly = TRUE) && require(concaveman, quietly = TRUE) && require(igraph, quietly = TRUE) && require(data.table, quietly = TRUE) && require(udpipe, quietly = TRUE)), fig.width=8, fig.height=8----
 library(BTM)
+library(ggplot2)
 library(ggraph)
 library(ggforce)
 library(concaveman)
@@ -100,7 +104,7 @@ plt <- textplot_bitermclusters(terminology, biterms,
                                subtitle = "Top 50 by group")
 plt
 
-## ----fig.width=5.5, fig.height=5.5--------------------------------------------
+## ----eval=(require(udpipe, quietly = TRUE)), fig.width=5.5, fig.height=5.5----
 library(udpipe)
 data("brussels_reviews_anno", package = "udpipe")
 x   <- subset(brussels_reviews_anno, xpos %in% "JJ")
