@@ -170,3 +170,32 @@ plt <- textplot_cooccurrence(biterms,
                              fontface = "bold")
 plt
 
+## ----eval=(require(uwot, quietly = TRUE) && require(ggplot2, quietly = TRUE) && require(ggrepel, quietly = TRUE) && require(ggalt, quietly = TRUE) ), fig.width=9, fig.height=7, out.width = '0.9\\textwidth', out.height = '0.7\\textwidth'----
+library(uwot)
+set.seed(1234)
+
+## Put embeddings in lower-dimensional space (2D)
+data(example_embedding, package = "textplot")
+embed.2d <- umap(example_embedding,
+                 n_components = 2, metric = "cosine", n_neighbors = 15,
+                 fast_sgd = TRUE, n_threads = 2, verbose = FALSE)
+embed.2d <- data.frame(term = rownames(example_embedding),
+                       x = embed.2d[, 1], y = embed.2d[, 2],
+                       stringsAsFactors = FALSE)
+head(embed.2d, n = 5)
+
+## Get a dataset with words assigned to each cluster with a certain probability weight
+data(example_embedding_clusters, package = "textplot")
+terminology <- merge(example_embedding_clusters, embed.2d, by = "term", sort = FALSE)
+terminology <- subset(terminology, rank <= 7 & cluster %in% c(1, 3, 4, 10, 15, 19, 17))
+head(terminology, n = 10)
+
+## Plot the relevant embeddings
+library(ggplot2)
+library(ggrepel)
+library(ggalt)
+plt <- textplot_embedding_2d(terminology, encircle = TRUE, points = TRUE,
+                             title = "Embedding Topic Model clusters",
+                             subtitle = "embedded in 2D using UMAP")
+plt
+
