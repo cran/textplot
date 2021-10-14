@@ -1,7 +1,7 @@
 Package: textplot
 Type: Package
 Title: Text Plots
-Version: 0.2.0
+Version: 0.2.1
 Maintainer: Jan Wijffels <jwijffels@bnosac.be>
 Authors@R: c(
     person('Jan', 'Wijffels', role = c('aut', 'cre', 'cph'), email = 'jwijffels@bnosac.be'), 
@@ -19,9 +19,9 @@ Imports: utils, methods, lattice, stats, Matrix, graphics, data.table
 Suggests: knitr, udpipe, BTM, igraph, graph, Rgraphviz, qgraph, glasso,
         ggplot2, ggraph, ggforce, concaveman, ggrepel, ggalt, uwot
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 NeedsCompilation: no
-Packaged: 2021-08-18 18:00:14 UTC; Jan
+Packaged: 2021-10-14 21:03:41 UTC; Jan
 Author: Jan Wijffels [aut, cre, cph],
   BNOSAC [cph],
   Sacha Epskamp [ctb, cph] (code in R/matrix_reduction.R adapted from the
@@ -30,4 +30,4 @@ Author: Jan Wijffels [aut, cre, cph],
     R/textplot_corlines.R adapted from the tm package version 0.4 which
     is GPL-2 licensed)
 Repository: CRAN
-Date/Publication: 2021-08-18 18:20:02 UTC
+Date/Publication: 2021-10-14 21:40:02 UTC
